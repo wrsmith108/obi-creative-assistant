@@ -1,14 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Provider, 
   defaultTheme, 
   Button, 
   Flex, 
-  Heading, 
-  Text, 
-  View,
-  StatusLight,
-  Grid
+  StatusLight
 } from '@adobe/react-spectrum';
 import { 
   Sparkles, 
@@ -24,9 +20,17 @@ import {
   Play
 } from 'lucide-react';
 import { ObiModal } from '@/components/ObiModal';
+import { MacOSMenuBar } from '@/components/MacOSMenuBar';
+import { CommandPalette } from '@/components/CommandPalette';
+import { HelpModal } from '@/components/HelpModal';
+import { useKeyboardShortcuts, createAppShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [currentPersona, setCurrentPersona] = useState('creative_director');
 
   const features = [
     {
@@ -62,9 +66,56 @@ const Index = () => {
     { icon: Code, label: "Developer", focus: "API integration & automation" }
   ];
 
+  // Keyboard shortcuts
+  const shortcuts = createAppShortcuts({
+    onOpenCommandPalette: () => setIsCommandPaletteOpen(true),
+    onTogglePersona: () => setIsCommandPaletteOpen(true),
+    onShowHelp: () => setIsHelpModalOpen(true),
+    onCloseModal: () => {
+      setIsModalOpen(false);
+      setIsCommandPaletteOpen(false);
+      setIsHelpModalOpen(false);
+    }
+  });
+
+  useKeyboardShortcuts(shortcuts);
+
+  // Handle persona changes
+  const handlePersonaChange = (persona: string) => {
+    setCurrentPersona(persona);
+    setIsModalOpen(true);
+  };
+
+  const handleWorkflowStart = (workflow: string) => {
+    console.log('Starting workflow:', workflow);
+    setIsModalOpen(true);
+  };
+
+  // Theme toggle
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  // Initialize theme
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
   return (
-    <Provider theme={defaultTheme} colorScheme="dark">
+    <Provider theme={defaultTheme} colorScheme={isDarkMode ? "dark" : "light"}>
       <div className="min-h-screen bg-background">
+        {/* macOS Menu Bar */}
+        <MacOSMenuBar
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+          onShowHelp={() => setIsHelpModalOpen(true)}
+          onToggleTheme={toggleTheme}
+          isDark={isDarkMode}
+        />
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto">
@@ -202,6 +253,20 @@ const Index = () => {
       </div>
 
         <ObiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        
+        {/* Command Palette */}
+        <CommandPalette
+          isOpen={isCommandPaletteOpen}
+          onClose={() => setIsCommandPaletteOpen(false)}
+          onPersonaChange={handlePersonaChange}
+          onWorkflowStart={handleWorkflowStart}
+        />
+
+        {/* Help Modal */}
+        <HelpModal
+          isOpen={isHelpModalOpen}
+          onClose={() => setIsHelpModalOpen(false)}
+        />
       </div>
     </Provider>
   );
