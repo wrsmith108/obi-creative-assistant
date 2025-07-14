@@ -1,3 +1,4 @@
+
 import { 
   Picker, 
   Item, 
@@ -56,7 +57,7 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
         const Icon = config.icon;
         return (
           <Item key={key} textValue={config.label}>
-            <Flex alignItems="start" gap="size-150">
+            <Flex alignItems="center" gap="size-150">
               <View 
                 backgroundColor="gray-300" 
                 borderRadius="medium" 
@@ -64,14 +65,9 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
               >
                 <Icon className="h-4 w-4" />
               </View>
-              <Flex direction="column">
-                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                  {config.label}
-                </Text>
-                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)', whiteSpace: 'nowrap' }}>
-                  {config.description}
-                </Text>
-              </Flex>
+              <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                {config.label}
+              </Text>
             </Flex>
           </Item>
         );
