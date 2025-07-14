@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { UserPersona } from './ObiModal';
 import { getPersonaContext, generateFireflyResponse, FireflyWorkflow } from '../lib/firefly-simulation';
+import { VoiceControls } from './VoiceControls';
 
 interface Message {
   id: string;
@@ -56,6 +57,9 @@ export function ConversationInterface({
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
+  const [speakFunction, setSpeakFunction] = useState<((text: string) => void) | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,13 +68,14 @@ export function ConversationInterface({
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleSendMessage = async (messageText?: string) => {
+    const textToSend = messageText || input;
+    if (!textToSend.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       type: 'user',
-      content: input,
+      content: textToSend,
       timestamp: new Date()
     };
 
@@ -81,7 +86,7 @@ export function ConversationInterface({
     // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const response = generateFireflyResponse(input, persona, brandContext);
+    const response = generateFireflyResponse(textToSend, persona, brandContext);
     
     const assistantMessage: Message = {
       id: (Date.now() + 1).toString(),
@@ -94,11 +99,22 @@ export function ConversationInterface({
 
     setMessages(prev => [...prev, assistantMessage]);
     
+    // Speak the response if speech is enabled
+    if (isSpeechEnabled && speakFunction) {
+      speakFunction(response.message);
+    }
+    
     if (response.workflow) {
       onWorkflowStart(response.workflow.name);
     }
     
     setIsLoading(false);
+  };
+
+  const handleVoiceInput = (text: string) => {
+    if (text.trim()) {
+      handleSendMessage(text);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -111,7 +127,19 @@ export function ConversationInterface({
   const quickActions = getPersonaContext(persona).quickActions;
 
   return (
-    <Flex direction="column" height="100%">
+    <View height="100%">
+      {/* Voice Controls */}
+      <View padding="size-200" UNSAFE_className="border-b border-border/30">
+        <VoiceControls
+          onVoiceInput={handleVoiceInput}
+          onSpeakText={(speakFn) => setSpeakFunction(() => speakFn)}
+          isListening={isVoiceListening}
+          onListeningChange={setIsVoiceListening}
+          isSpeechEnabled={isSpeechEnabled}
+          onSpeechEnabledChange={setIsSpeechEnabled}
+        />
+      </View>
+    <Flex direction="column" flex={1}>
       <View flex={1} padding="size-200" UNSAFE_style={{ overflowY: 'auto' }}>
         <Flex direction="column" gap="size-300">
           {messages.map((message) => (
@@ -229,7 +257,7 @@ export function ConversationInterface({
             UNSAFE_className="bg-muted/50 border-border/50"
           />
           <Button 
-            onPress={handleSendMessage}
+            onPress={() => handleSendMessage()}
             isDisabled={!input.trim() || isLoading}
             variant="accent"
             UNSAFE_className="bg-gradient-primary hover:opacity-90 shadow-glow"
@@ -242,6 +270,7 @@ export function ConversationInterface({
           </Button>
         </Flex>
       </View>
-    </Flex>
+      </Flex>
+    </View>
   );
 }
