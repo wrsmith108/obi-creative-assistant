@@ -51,7 +51,7 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
       minWidth="280px"
       label="Select Persona"
       labelPosition="side"
-      UNSAFE_className="bg-muted/50 border-border/50"
+      UNSAFE_className="bg-muted/50 border-border/50 [&_[data-testid='picker-button']]:!pr-6"
     >
       {Object.entries(personaConfig).map(([key, config]) => {
         const Icon = config.icon;
