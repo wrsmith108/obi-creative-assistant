@@ -63,16 +63,16 @@ export function ObiModal({ isOpen, onClose }: ObiModalProps) {
         <View 
           backgroundColor="gray-100" 
           borderRadius="large"
-          width="90vw"
+          width="95vw"
           height="90vh"
-          maxWidth="1200px"
-          padding="size-300"
+          maxWidth="1400px"
+          padding="size-400"
           UNSAFE_className="bg-gradient-glass border border-border/50 shadow-creative"
         >
           {/* Header */}
-          <Flex direction="column" gap="size-200" height="100%">
-            <Flex justifyContent="space-between" alignItems="center" marginBottom="size-200">
-              <Flex alignItems="center" gap="size-200">
+          <Flex direction="column" gap="size-300" height="100%">
+            <Flex justifyContent="space-between" alignItems="center" marginBottom="size-300" wrap="wrap" minHeight="size-800">
+              <Flex alignItems="center" gap="size-300" minWidth="300px">
                 <View 
                   backgroundColor="blue-600" 
                   borderRadius="large" 
@@ -91,17 +91,21 @@ export function ObiModal({ isOpen, onClose }: ObiModalProps) {
                 </Flex>
               </Flex>
               
-              <Flex alignItems="center" gap="size-200">
-                <Flex alignItems="center" gap="size-100">
+              <Flex alignItems="center" gap="size-300" wrap="wrap">
+                <View padding="size-100">
                   <StatusLight variant="positive">API Connected</StatusLight>
-                </Flex>
-                <PersonaSwitcher 
-                  currentPersona={currentPersona}
-                  onPersonaChange={setCurrentPersona}
-                />
-                <ActionButton onPress={onClose}>
-                  ✕
-                </ActionButton>
+                </View>
+                <View padding="size-100">
+                  <PersonaSwitcher 
+                    currentPersona={currentPersona}
+                    onPersonaChange={setCurrentPersona}
+                  />
+                </View>
+                <View padding="size-100">
+                  <ActionButton onPress={onClose}>
+                    ✕
+                  </ActionButton>
+                </View>
               </Flex>
             </Flex>
 
