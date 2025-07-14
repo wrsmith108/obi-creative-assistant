@@ -46,7 +46,8 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
     <Picker
       selectedKey={currentPersona}
       onSelectionChange={(key) => onPersonaChange(key as UserPersona)}
-      width="200px"
+      width="240px"
+      minWidth="240px"
       label="Select Persona"
       labelPosition="side"
       UNSAFE_className="bg-muted/50 border-border/50"
