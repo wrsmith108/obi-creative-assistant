@@ -1,5 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
+import { 
+  Picker, 
+  Item, 
+  Text, 
+  Flex, 
+  View 
+} from '@adobe/react-spectrum';
 import { 
   Crown, 
   Target, 
@@ -17,64 +22,59 @@ const personaConfig = {
   creative_director: {
     label: "Creative Director",
     icon: Crown,
-    color: "bg-creative-primary/20 text-creative-primary border-creative-primary/30",
     description: "Brand scaling & Custom Models"
   },
   campaign_manager: {
     label: "Campaign Manager", 
     icon: Target,
-    color: "bg-creative-secondary/20 text-creative-secondary border-creative-secondary/30",
     description: "Multi-channel optimization"
   },
   designer: {
     label: "Designer",
     icon: Palette,
-    color: "bg-creative-success/20 text-creative-success border-creative-success/30", 
     description: "Creative workflows & PS integration"
   },
   developer: {
     label: "Developer",
     icon: Code,
-    color: "bg-creative-warning/20 text-creative-warning border-creative-warning/30",
     description: "API integration & automation"
   }
 };
 
 export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwitcherProps) {
-  const currentConfig = personaConfig[currentPersona];
-  const CurrentIcon = currentConfig.icon;
-
   return (
-    <Select
-      value={currentPersona}
-      onValueChange={(value: UserPersona) => onPersonaChange(value)}
+    <Picker
+      selectedKey={currentPersona}
+      onSelectionChange={(key) => onPersonaChange(key as UserPersona)}
+      width="200px"
+      label="Select Persona"
+      labelPosition="side"
+      UNSAFE_className="bg-muted/50 border-border/50"
     >
-      <SelectTrigger className="w-48 bg-muted/50 border-border/50">
-        <div className="flex items-center gap-2">
-          <CurrentIcon className="h-4 w-4" />
-          <SelectValue />
-        </div>
-      </SelectTrigger>
-      <SelectContent className="w-64">
-        {Object.entries(personaConfig).map(([key, config]) => {
-          const Icon = config.icon;
-          return (
-            <SelectItem key={key} value={key} className="p-3">
-              <div className="flex items-start gap-3 w-full">
-                <div className="p-1.5 rounded-lg bg-muted">
-                  <Icon className="h-4 w-4" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm">{config.label}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    {config.description}
-                  </div>
-                </div>
-              </div>
-            </SelectItem>
-          );
-        })}
-      </SelectContent>
-    </Select>
+      {Object.entries(personaConfig).map(([key, config]) => {
+        const Icon = config.icon;
+        return (
+          <Item key={key} textValue={config.label}>
+            <Flex alignItems="start" gap="size-150">
+              <View 
+                backgroundColor="gray-300" 
+                borderRadius="medium" 
+                padding="size-75"
+              >
+                <Icon className="h-4 w-4" />
+              </View>
+              <Flex direction="column">
+                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                  {config.label}
+                </Text>
+                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)' }}>
+                  {config.description}
+                </Text>
+              </Flex>
+            </Flex>
+          </Item>
+        );
+      })}
+    </Picker>
   );
 }

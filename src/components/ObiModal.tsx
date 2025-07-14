@@ -1,8 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import { 
+  Provider, 
+  defaultTheme, 
+  DialogTrigger, 
+  Dialog, 
+  Heading, 
+  Content,
+  Button,
+  Text,
+  Flex,
+  View,
+  TabList,
+  TabPanels,
+  Tabs,
+  Item,
+  StatusLight,
+  ActionButton,
+  Well
+} from '@adobe/react-spectrum';
 import { 
   Sparkles, 
   Palette, 
@@ -31,6 +46,7 @@ export function ObiModal({ isOpen, onClose }: ObiModalProps) {
   const [currentPersona, setCurrentPersona] = useState<UserPersona>('creative_director');
   const [activeWorkflow, setActiveWorkflow] = useState<string | null>(null);
   const [brandContext, setBrandContext] = useState<any>(null);
+  const [selectedTab, setSelectedTab] = useState('conversation');
 
   const fireflySuggestions = [
     { icon: ImageIcon, label: "Generate Campaign Assets", count: "12 variations" },
@@ -39,135 +55,172 @@ export function ObiModal({ isOpen, onClose }: ObiModalProps) {
     { icon: Target, label: "Localization Workflow", count: "5 markets" }
   ];
 
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl h-[90vh] bg-gradient-glass border-border/50 shadow-creative">
-        <DialogHeader className="border-b border-border/30 pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-gradient-primary shadow-glow">
-                <Sparkles className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <div>
-                <DialogTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  Obi
-                </DialogTitle>
-                <p className="text-sm text-muted-foreground">
-                  Adobe Firefly Services Automation Assistant
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="bg-creative-success/20 text-creative-success border-creative-success/30">
-                <Zap className="h-3 w-3 mr-1" />
-                API Connected
-              </Badge>
-              <PersonaSwitcher 
-                currentPersona={currentPersona}
-                onPersonaChange={setCurrentPersona}
-              />
-            </div>
-          </div>
-        </DialogHeader>
-
-        <div className="flex-1 flex gap-6 overflow-hidden">
-          {/* Main Conversation Area */}
-          <div className="flex-1 flex flex-col">
-            <Tabs defaultValue="conversation" className="flex-1 flex flex-col">
-              <TabsList className="grid w-full grid-cols-3 bg-muted/50">
-                <TabsTrigger value="conversation" className="flex items-center gap-2">
-                  <Brain className="h-4 w-4" />
-                  Conversation
-                </TabsTrigger>
-                <TabsTrigger value="workflow" className="flex items-center gap-2">
-                  <Workflow className="h-4 w-4" />
-                  Workflow
-                </TabsTrigger>
-                <TabsTrigger value="brand" className="flex items-center gap-2">
-                  <Palette className="h-4 w-4" />
-                  Brand Context
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="conversation" className="flex-1 mt-4">
-                <ConversationInterface 
-                  persona={currentPersona}
-                  onWorkflowStart={setActiveWorkflow}
-                  brandContext={brandContext}
+    <Provider theme={defaultTheme} colorScheme="dark">
+      <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <View 
+          backgroundColor="gray-100" 
+          borderRadius="large"
+          width="90vw"
+          height="90vh"
+          maxWidth="1200px"
+          padding="size-300"
+          UNSAFE_className="bg-gradient-glass border border-border/50 shadow-creative"
+        >
+          {/* Header */}
+          <Flex direction="column" gap="size-200" height="100%">
+            <Flex justifyContent="space-between" alignItems="center" marginBottom="size-200">
+              <Flex alignItems="center" gap="size-200">
+                <View 
+                  backgroundColor="blue-600" 
+                  borderRadius="large" 
+                  padding="size-150"
+                  UNSAFE_className="bg-gradient-primary shadow-glow"
+                >
+                  <Sparkles className="h-6 w-6 text-white" />
+                </View>
+                <Flex direction="column">
+                  <Heading level={1} marginBottom="size-0" UNSAFE_className="bg-gradient-primary bg-clip-text text-transparent">
+                    Obi
+                  </Heading>
+                  <Text UNSAFE_style={{ fontSize: '14px', color: 'var(--muted-foreground)' }}>
+                    Adobe Firefly Services Automation Assistant
+                  </Text>
+                </Flex>
+              </Flex>
+              
+              <Flex alignItems="center" gap="size-200">
+                <Flex alignItems="center" gap="size-100">
+                  <StatusLight variant="positive">API Connected</StatusLight>
+                </Flex>
+                <PersonaSwitcher 
+                  currentPersona={currentPersona}
+                  onPersonaChange={setCurrentPersona}
                 />
-              </TabsContent>
+                <ActionButton onPress={onClose}>
+                  ✕
+                </ActionButton>
+              </Flex>
+            </Flex>
 
-              <TabsContent value="workflow" className="flex-1 mt-4">
-                <WorkflowVisualization 
-                  activeWorkflow={activeWorkflow}
-                  persona={currentPersona}
-                />
-              </TabsContent>
+            {/* Main Content */}
+            <Flex flex={1} gap="size-300">
+              {/* Tabbed Interface */}
+              <Flex direction="column" flex={1}>
+                <Tabs 
+                  selectedKey={selectedTab}
+                  onSelectionChange={(key) => setSelectedTab(String(key))}
+                  height="100%"
+                >
+                  <TabList>
+                    <Item key="conversation">
+                      <Flex alignItems="center" gap="size-100">
+                        <Brain className="h-4 w-4" />
+                        <Text>Conversation</Text>
+                      </Flex>
+                    </Item>
+                    <Item key="workflow">
+                      <Flex alignItems="center" gap="size-100">
+                        <Workflow className="h-4 w-4" />
+                        <Text>Workflow</Text>
+                      </Flex>
+                    </Item>
+                    <Item key="brand">
+                      <Flex alignItems="center" gap="size-100">
+                        <Palette className="h-4 w-4" />
+                        <Text>Brand Context</Text>
+                      </Flex>
+                    </Item>
+                  </TabList>
+                  
+                  <TabPanels height="100%">
+                    <Item key="conversation">
+                      <ConversationInterface 
+                        persona={currentPersona}
+                        onWorkflowStart={setActiveWorkflow}
+                        brandContext={brandContext}
+                      />
+                    </Item>
+                    <Item key="workflow">
+                      <WorkflowVisualization 
+                        activeWorkflow={activeWorkflow}
+                        persona={currentPersona}
+                      />
+                    </Item>
+                    <Item key="brand">
+                      <BrandContextManager 
+                        brandContext={brandContext}
+                        onBrandContextChange={setBrandContext}
+                        persona={currentPersona}
+                      />
+                    </Item>
+                  </TabPanels>
+                </Tabs>
+              </Flex>
 
-              <TabsContent value="brand" className="flex-1 mt-4">
-                <BrandContextManager 
-                  brandContext={brandContext}
-                  onBrandContextChange={setBrandContext}
-                  persona={currentPersona}
-                />
-              </TabsContent>
-            </Tabs>
-          </div>
+              {/* Quick Actions Sidebar */}
+              <View width="300px" UNSAFE_className="border-l border-border/30 pl-6">
+                <Flex direction="column" gap="size-300">
+                  <View>
+                    <Flex alignItems="center" gap="size-100" marginBottom="size-200">
+                      <Sparkles className="h-4 w-4 text-blue-600" />
+                      <Heading level={3}>Firefly Quick Actions</Heading>
+                    </Flex>
+                    <Flex direction="column" gap="size-100">
+                      {fireflySuggestions.map((suggestion, index) => (
+                        <ActionButton
+                          key={index}
+                          onPress={() => setActiveWorkflow(suggestion.label.toLowerCase())}
+                          UNSAFE_className="w-full justify-start p-3 h-auto text-left"
+                        >
+                          <Flex alignItems="center" gap="size-150">
+                            <suggestion.icon className="h-4 w-4 text-blue-600" />
+                            <Flex direction="column" alignItems="start">
+                              <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold' }}>{suggestion.label}</Text>
+                              <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)' }}>{suggestion.count}</Text>
+                            </Flex>
+                          </Flex>
+                        </ActionButton>
+                      ))}
+                    </Flex>
+                  </View>
 
-          {/* Quick Actions Sidebar */}
-          <div className="w-80 border-l border-border/30 pl-6">
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Firefly Quick Actions
-                </h3>
-                <div className="space-y-2">
-                  {fireflySuggestions.map((suggestion, index) => (
-                    <Button
-                      key={index}
-                      variant="ghost"
-                      className="w-full justify-start p-3 h-auto hover:bg-muted/70 transition-smooth"
-                      onClick={() => setActiveWorkflow(suggestion.label.toLowerCase())}
-                    >
-                      <suggestion.icon className="h-4 w-4 mr-3 text-primary" />
-                      <div className="text-left">
-                        <div className="font-medium text-sm">{suggestion.label}</div>
-                        <div className="text-xs text-muted-foreground">{suggestion.count}</div>
-                      </div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-gradient-creative/10 border border-creative-primary/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="p-1.5 rounded-lg bg-creative-primary/20">
-                    <Settings className="h-4 w-4 text-creative-primary" />
-                  </div>
-                  <h4 className="font-medium text-sm">System Status</h4>
-                </div>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Firefly API</span>
-                    <Badge variant="secondary" className="bg-creative-success/20 text-creative-success text-xs px-2 py-0">
-                      Active
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Custom Models</span>
-                    <span className="text-creative-secondary">3 trained</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Queue</span>
-                    <span className="text-foreground">2 processing</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+                  <Well>
+                    <Flex direction="column" gap="size-200">
+                      <Flex alignItems="center" gap="size-100">
+                        <View 
+                          backgroundColor="blue-400" 
+                          borderRadius="medium" 
+                          padding="size-75"
+                        >
+                          <Settings className="h-4 w-4 text-blue-800" />
+                        </View>
+                        <Heading level={4}>System Status</Heading>
+                      </Flex>
+                      <Flex direction="column" gap="size-100">
+                        <Flex justifyContent="space-between">
+                          <Text UNSAFE_style={{ fontSize: '14px', color: 'var(--muted-foreground)' }}>Firefly API</Text>
+                          <StatusLight variant="positive">Active</StatusLight>
+                        </Flex>
+                        <Flex justifyContent="space-between">
+                          <Text UNSAFE_style={{ fontSize: '14px', color: 'var(--muted-foreground)' }}>Custom Models</Text>
+                          <Text UNSAFE_style={{ fontSize: '14px' }}>3 trained</Text>
+                        </Flex>
+                        <Flex justifyContent="space-between">
+                          <Text UNSAFE_style={{ fontSize: '14px', color: 'var(--muted-foreground)' }}>Queue</Text>
+                          <Text UNSAFE_style={{ fontSize: '14px' }}>2 processing</Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                  </Well>
+                </Flex>
+              </View>
+            </Flex>
+          </Flex>
+        </View>
+      </div>
+    </Provider>
   );
 }

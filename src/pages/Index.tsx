@@ -1,6 +1,15 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { 
+  Provider, 
+  defaultTheme, 
+  Button, 
+  Flex, 
+  Heading, 
+  Text, 
+  View,
+  StatusLight,
+  Grid
+} from '@adobe/react-spectrum';
 import { 
   Sparkles, 
   Palette, 
@@ -54,7 +63,8 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <Provider theme={defaultTheme} colorScheme="dark">
+      <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto">
@@ -81,23 +91,23 @@ const Index = () => {
             scale campaigns across channels, and optimize creative production with Adobe Firefly Services.
           </p>
 
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="bg-creative-success/20 text-creative-success border-creative-success/30">
+          <Flex justifyContent="center" gap="size-200" marginBottom="size-300" wrap>
+            <StatusLight variant="positive">
               <Zap className="h-3 w-3 mr-1" />
               Firefly Services Ready
-            </Badge>
-            <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+            </StatusLight>
+            <StatusLight variant="info">
               Custom Models Supported
-            </Badge>
-            <Badge variant="secondary" className="bg-creative-secondary/20 text-creative-secondary border-creative-secondary/30">
+            </StatusLight>
+            <StatusLight variant="neutral">
               Real-time Workflows
-            </Badge>
-          </div>
+            </StatusLight>
+          </Flex>
 
           <Button 
-            size="lg" 
-            className="bg-gradient-primary hover:opacity-90 shadow-glow text-lg px-8 py-6 h-auto"
-            onClick={() => setIsModalOpen(true)}
+            variant="accent"
+            onPress={() => setIsModalOpen(true)}
+            UNSAFE_className="bg-gradient-primary hover:opacity-90 shadow-glow text-lg px-8 py-6 h-auto"
           >
             <Play className="h-5 w-5 mr-2" />
             Launch Obi Assistant
@@ -180,9 +190,9 @@ const Index = () => {
             Generate content, scale campaigns, and optimize workflows with Adobe Firefly Services.
           </p>
           <Button 
-            size="lg" 
-            className="bg-gradient-creative hover:opacity-90 shadow-creative text-lg px-8 py-6 h-auto"
-            onClick={() => setIsModalOpen(true)}
+            variant="accent"
+            onPress={() => setIsModalOpen(true)}
+            UNSAFE_className="bg-gradient-creative hover:opacity-90 shadow-creative text-lg px-8 py-6 h-auto"
           >
             <Sparkles className="h-5 w-5 mr-2" />
             Start Creative Automation
@@ -191,8 +201,9 @@ const Index = () => {
         </div>
       </div>
 
-      <ObiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
+        <ObiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </div>
+    </Provider>
   );
 };
 

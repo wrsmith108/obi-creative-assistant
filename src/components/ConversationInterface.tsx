@@ -1,8 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
+import { 
+  Button, 
+  TextField, 
+  View, 
+  Flex, 
+  Text, 
+  StatusLight,
+  ActionButton,
+  ButtonGroup
+} from '@adobe/react-spectrum';
 import { 
   Send, 
   Loader2, 
@@ -105,9 +111,9 @@ export function ConversationInterface({
   const quickActions = getPersonaContext(persona).quickActions;
 
   return (
-    <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-6">
+    <Flex direction="column" height="100%">
+      <View flex={1} padding="size-200" UNSAFE_style={{ overflowY: 'auto' }}>
+        <Flex direction="column" gap="size-300">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -137,9 +143,9 @@ export function ConversationInterface({
                     <div className="flex items-center gap-2 mb-2">
                       <Zap className="h-4 w-4 text-primary" />
                       <span className="font-medium text-sm">Firefly Workflow</span>
-                      <Badge variant="secondary" className="text-xs">
+                      <StatusLight variant="neutral">
                         {message.workflow.type}
-                      </Badge>
+                      </StatusLight>
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
@@ -194,39 +200,39 @@ export function ConversationInterface({
           )}
           
           <div ref={scrollRef} />
-        </div>
-      </ScrollArea>
+        </Flex>
+      </View>
 
       {/* Quick Actions */}
-      <div className="p-4 border-t border-border/30">
-        <div className="flex gap-2 mb-3 flex-wrap">
+      <View padding="size-200" UNSAFE_className="border-t border-border/30">
+        <Flex gap="size-100" marginBottom="size-150" wrap>
           {quickActions.map((action, index) => (
-            <Button
+            <ActionButton
               key={index}
-              variant="outline"
-              size="sm"
-              className="text-xs h-7"
-              onClick={() => setInput(action)}
+              onPress={() => setInput(action)}
+              UNSAFE_className="text-xs"
             >
               {action}
-            </Button>
+            </ActionButton>
           ))}
-        </div>
+        </Flex>
 
         {/* Input Area */}
-        <div className="flex gap-2">
-          <Input
+        <Flex gap="size-150">
+          <TextField
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onChange={setInput}
+            onKeyDown={handleKeyPress}
             placeholder={`Ask Obi about ${getPersonaContext(persona).focusArea}...`}
-            className="flex-1 bg-muted/50 border-border/50"
-            disabled={isLoading}
+            flex={1}
+            isDisabled={isLoading}
+            UNSAFE_className="bg-muted/50 border-border/50"
           />
           <Button 
-            onClick={handleSendMessage}
-            disabled={!input.trim() || isLoading}
-            className="bg-gradient-primary hover:opacity-90 shadow-glow"
+            onPress={handleSendMessage}
+            isDisabled={!input.trim() || isLoading}
+            variant="accent"
+            UNSAFE_className="bg-gradient-primary hover:opacity-90 shadow-glow"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -234,8 +240,8 @@ export function ConversationInterface({
               <Send className="h-4 w-4" />
             )}
           </Button>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </View>
+    </Flex>
   );
 }
