@@ -16,7 +16,7 @@ import {
   Play,
   Pause
 } from 'lucide-react';
-import { UserPersona } from './FlariModal';
+import { UserPersona } from './ObiModal';
 import { sampleWorkflows, WorkflowStep } from '../lib/firefly-simulation';
 
 interface WorkflowVisualizationProps {

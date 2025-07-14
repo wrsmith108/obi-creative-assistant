@@ -1,4 +1,4 @@
-import { UserPersona } from '@/components/FlariModal';
+import { UserPersona } from '@/components/ObiModal';
 
 export interface FireflyWorkflow {
   name: string;
@@ -31,7 +31,7 @@ export interface PersonaContext {
 export function getPersonaContext(persona: UserPersona): PersonaContext {
   const contexts = {
     creative_director: {
-      welcomeMessage: "Hi! I'm Flari, your Firefly Services automation assistant. I'll help you scale brand content generation and manage Custom Model workflows. What campaign are you working on?",
+      welcomeMessage: "Hi! I'm Obi, your Firefly Services automation assistant. I'll help you scale brand content generation and manage Custom Model workflows. What campaign are you working on?",
       focusArea: "brand scaling and Custom Models",
       quickActions: [
         "Train a Custom Model for our brand",
@@ -43,7 +43,7 @@ export function getPersonaContext(persona: UserPersona): PersonaContext {
       commonWorkflows: ["Brand asset generation", "Custom Model deployment", "Campaign scaling"]
     },
     campaign_manager: {
-      welcomeMessage: "Hello! I'm Flari, ready to help you automate campaign scaling and localization with Firefly Services. Let's optimize your content for multiple markets and channels!",
+      welcomeMessage: "Hello! I'm Obi, ready to help you automate campaign scaling and localization with Firefly Services. Let's optimize your content for multiple markets and channels!",
       focusArea: "campaign optimization and localization",
       quickActions: [
         "Localize campaign for APAC markets",
@@ -55,7 +55,7 @@ export function getPersonaContext(persona: UserPersona): PersonaContext {
       commonWorkflows: ["Multi-channel scaling", "Localization workflows", "Video optimization"]
     },
     designer: {
-      welcomeMessage: "Hey! I'm Flari, here to enhance your creative workflow with Firefly + Photoshop integration. I can help you master AI-enhanced design techniques!",
+      welcomeMessage: "Hey! I'm Obi, here to enhance your creative workflow with Firefly + Photoshop integration. I can help you master AI-enhanced design techniques!",
       focusArea: "creative workflows and Photoshop integration",
       quickActions: [
         "Learn Generative Fill techniques",
@@ -67,7 +67,7 @@ export function getPersonaContext(persona: UserPersona): PersonaContext {
       commonWorkflows: ["Photoshop integration", "Creative enhancement", "Batch processing"]
     },
     developer: {
-      welcomeMessage: "Hi! I'm Flari, your technical guide for Firefly Services API integration. I'll help you build robust creative automation systems and handle complex workflows.",
+      welcomeMessage: "Hi! I'm Obi, your technical guide for Firefly Services API integration. I'll help you build robust creative automation systems and handle complex workflows.",
       focusArea: "API integration and technical implementation",
       quickActions: [
         "Debug API rate limiting",

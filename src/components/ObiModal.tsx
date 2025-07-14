@@ -22,12 +22,12 @@ import { PersonaSwitcher } from './PersonaSwitcher';
 
 export type UserPersona = 'creative_director' | 'campaign_manager' | 'designer' | 'developer';
 
-interface FlariModalProps {
+interface ObiModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function FlariModal({ isOpen, onClose }: FlariModalProps) {
+export function ObiModal({ isOpen, onClose }: ObiModalProps) {
   const [currentPersona, setCurrentPersona] = useState<UserPersona>('creative_director');
   const [activeWorkflow, setActiveWorkflow] = useState<string | null>(null);
   const [brandContext, setBrandContext] = useState<any>(null);
@@ -50,7 +50,7 @@ export function FlariModal({ isOpen, onClose }: FlariModalProps) {
               </div>
               <div>
                 <DialogTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  Flari
+                  Obi
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground">
                   Adobe Firefly Services Automation Assistant

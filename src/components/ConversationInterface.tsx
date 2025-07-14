@@ -13,7 +13,7 @@ import {
   AlertCircle,
   Zap
 } from 'lucide-react';
-import { UserPersona } from './FlariModal';
+import { UserPersona } from './ObiModal';
 import { getPersonaContext, generateFireflyResponse, FireflyWorkflow } from '../lib/firefly-simulation';
 
 interface Message {
@@ -219,7 +219,7 @@ export function ConversationInterface({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder={`Ask Flari about ${getPersonaContext(persona).focusArea}...`}
+            placeholder={`Ask Obi about ${getPersonaContext(persona).focusArea}...`}
             className="flex-1 bg-muted/50 border-border/50"
             disabled={isLoading}
           />

@@ -14,7 +14,7 @@ import {
   Code,
   Play
 } from 'lucide-react';
-import { FlariModal } from '@/components/FlariModal';
+import { ObiModal } from '@/components/ObiModal';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +64,7 @@ const Index = () => {
             </div>
             <div className="text-left">
               <h1 className="text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Flari
+                Obi
               </h1>
               <p className="text-lg text-muted-foreground">
                 Adobe Firefly Services Automation
@@ -100,7 +100,7 @@ const Index = () => {
             onClick={() => setIsModalOpen(true)}
           >
             <Play className="h-5 w-5 mr-2" />
-            Launch Flari Assistant
+            Launch Obi Assistant
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>
         </div>
@@ -113,7 +113,7 @@ const Index = () => {
             Creative Workflow Automation
           </h3>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Flari integrates with Adobe Firefly Services to automate creative production, 
+            Obi integrates with Adobe Firefly Services to automate creative production, 
             from content generation to campaign scaling and brand management.
           </p>
         </div>
@@ -143,7 +143,7 @@ const Index = () => {
             Built for Creative Professionals
           </h3>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Flari adapts to your role and expertise, providing personalized automation 
+            Obi adapts to your role and expertise, providing personalized automation 
             assistance for every creative workflow scenario.
           </p>
         </div>
@@ -191,7 +191,7 @@ const Index = () => {
         </div>
       </div>
 
-      <FlariModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ObiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
