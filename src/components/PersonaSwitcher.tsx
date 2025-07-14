@@ -66,14 +66,9 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
               >
                 <Icon className="h-4 w-4" />
               </View>
-              <Flex direction="column" alignItems="start" UNSAFE_className="flex-1 min-w-0">
-                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: '600', whiteSpace: 'nowrap', color: 'var(--foreground)' }}>
-                  {config.label}
-                </Text>
-                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)', whiteSpace: 'nowrap' }}>
-                  {config.description}
-                </Text>
-              </Flex>
+              <Text UNSAFE_style={{ fontSize: '14px', fontWeight: '600', whiteSpace: 'nowrap', color: 'var(--foreground)' }}>
+                {config.label}
+              </Text>
             </Flex>
           </Item>
         );
