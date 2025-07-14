@@ -46,8 +46,8 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
     <Picker
       selectedKey={currentPersona}
       onSelectionChange={(key) => onPersonaChange(key as UserPersona)}
-      width="240px"
-      minWidth="240px"
+      width="280px"
+      minWidth="280px"
       label="Select Persona"
       labelPosition="side"
       UNSAFE_className="bg-muted/50 border-border/50"
@@ -65,10 +65,10 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
                 <Icon className="h-4 w-4" />
               </View>
               <Flex direction="column">
-                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                   {config.label}
                 </Text>
-                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)' }}>
+                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)', whiteSpace: 'nowrap' }}>
                   {config.description}
                 </Text>
               </Flex>
