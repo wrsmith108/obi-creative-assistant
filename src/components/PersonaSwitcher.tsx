@@ -51,23 +51,29 @@ export function PersonaSwitcher({ currentPersona, onPersonaChange }: PersonaSwit
       minWidth="280px"
       label="Select Persona"
       labelPosition="side"
-      UNSAFE_className="bg-muted/50 border-border/50 [&_[data-testid='picker-button']]:!pr-6"
+      UNSAFE_className="bg-muted/50 border-border/50 [&_[data-testid='picker-button']]:!pr-6 [&_.react-spectrum-Picker-popover]:!bg-card [&_.react-spectrum-Picker-popover]:!border-border/50 [&_.react-spectrum-Picker-popover]:!backdrop-blur-xl [&_.react-spectrum-Menu-item]:!py-2 [&_.react-spectrum-Menu-item]:!px-3 [&_.react-spectrum-Menu-item]:!mb-1 [&_.react-spectrum-Menu-item:last-child]:!mb-0 [&_.react-spectrum-Menu-item]:!rounded-md [&_.react-spectrum-Menu-item]:!transition-all [&_.react-spectrum-Menu-item]:!border-transparent [&_.react-spectrum-Menu-item]:!border [&_.react-spectrum-Menu]:!gap-1 [&_.react-spectrum-Menu]:!p-2"
     >
       {Object.entries(personaConfig).map(([key, config]) => {
         const Icon = config.icon;
         return (
           <Item key={key} textValue={config.label}>
-            <Flex alignItems="center" gap="size-150">
+            <Flex alignItems="center" gap="size-150" UNSAFE_className="w-full">
               <View 
                 backgroundColor="gray-300" 
                 borderRadius="medium" 
                 padding="size-75"
+                UNSAFE_className="bg-muted/50 flex-shrink-0"
               >
                 <Icon className="h-4 w-4" />
               </View>
-              <Text UNSAFE_style={{ fontSize: '14px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                {config.label}
-              </Text>
+              <Flex direction="column" alignItems="start" UNSAFE_className="flex-1 min-w-0">
+                <Text UNSAFE_style={{ fontSize: '14px', fontWeight: '600', whiteSpace: 'nowrap', color: 'var(--foreground)' }}>
+                  {config.label}
+                </Text>
+                <Text UNSAFE_style={{ fontSize: '12px', color: 'var(--muted-foreground)', whiteSpace: 'nowrap' }}>
+                  {config.description}
+                </Text>
+              </Flex>
             </Flex>
           </Item>
         );
